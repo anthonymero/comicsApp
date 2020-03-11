@@ -21,13 +21,10 @@ const routes: Routes = [
     component: BookListComponent
   },
   {
-    path: 'books/:id',
-    component: SingleBookComponent
-  },
-  {
     path: 'books/new',
     component: BookFormComponent
   }
+
 ];
 
 @NgModule({
