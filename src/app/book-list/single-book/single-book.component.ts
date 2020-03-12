@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IBook } from 'src/app/models/book.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BooksService } from 'src/app/services/books.service';
 
 @Component({
   selector: 'app-single-book',
@@ -7,9 +10,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SingleBookComponent implements OnInit {
 
-  constructor() { }
+  book: IBook;
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly booksService: BooksService,
+    private readonly router: Router,
+  ) { }
 
   ngOnInit() {
+    this.book = {
+      title: '',
+      author: '',
+      editor: ''
+    };
+    const id = this.route.snapshot.params.id;
+    this.booksService.getSingleBook(+id).then(
+      (book: IBook) => {
+        this.book = book;
+      }
+    );
+  }
+
+  onBack() {
+    this.router.navigate(['/books']);
   }
 
 }
