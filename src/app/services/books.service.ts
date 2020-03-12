@@ -32,7 +32,7 @@ export class BooksService {
   }
 
   // Get book by id
-  getSingleBook(id: string) {
+  getSingleBook(id: number) {
     return new Promise((resolve, reject) => {
       firebase.database().ref('/books/view/' + id)
         .once('value').then(
