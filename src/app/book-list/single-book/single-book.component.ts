@@ -38,6 +38,10 @@ export class SingleBookComponent implements OnInit {
     );
   }
 
+  getBackgroundImage(book: IBook) {
+    return `url(${book.photo})`;
+  }
+
   onBack() {
     this.router.navigate(['/books']);
   }

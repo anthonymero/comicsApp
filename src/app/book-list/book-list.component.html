@@ -1,16 +1,22 @@
-<div class="row">
+<div class="book-list row">
     <div class="col-xs-12">
         <h2>Vos livres</h2>
         <div class="list-group">
             <button class="list-group-item" *ngFor="let book of books; let i = index" (click)="onViewBook(i)">
+
+
                 <h3 class="list-group-heading">
-                    {{book.title}}
+                    {{book.collection}} <span *ngIf="!!book.volume">Tome {{book.volume}}</span>
                     <!-- remove book -->
                     <button class="btn btn-default pull-right" (click)="onRemoveBook(book)">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </h3>
-                <p class="list-group-item-text">{{book.author}}</p>
+
+                <h4>{{book.title}}</h4>
+                <p class="list-group-item-text">{{book.editor}}</p>
+                <img class="cover pull-right" *ngIf="book && book.photo" [src]="book.photo" alt="book photo">
+
             </button>
         </div>
         <button class="btn btn-primary" (click)="onNewBook()">Nouveau livre</button>

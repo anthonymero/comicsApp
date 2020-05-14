@@ -1,8 +1,24 @@
-<div class="row">
+<div class="row single-book">
     <div class="col-xs-12">
-        <img *ngIf="book && book.photo" [src]="book.photo" alt="book photo">
-        <h1>{{book.title}}</h1>
-        <h3>{{book.author}}</h3>
+        <div class="row">
+            <div class="col-xs-6 single-book-description">
+                <h1>{{book.collection}}</h1>
+                <h3>Tome {{book.volume}} - {{book.title}}</h3>
+                <p>Edition : {{book.editor}}</p>
+                <p>Année de parution : {{book.year}}</p>
+                <p>Scénario : {{book.scenario}}</p>
+                <p>Dessin : {{book.drawing}}</p>
+                <p>Couleurs : {{book.colors}}</p>
+
+
+            </div>
+            <div class="col-xs-6">
+                <div class="cover" [ngStyle]="{'background-image': getBackgroundImage(book)}">
+                </div>
+            </div>
+
+        </div>
+
         <button class="btn btn-default" (click)="onBack()">Retour</button>
     </div>
 </div>
