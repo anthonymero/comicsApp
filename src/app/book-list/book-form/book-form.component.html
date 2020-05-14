@@ -12,7 +12,20 @@
                 </label>
                 <input type="text" class="form-control" formControlName="author">
             </div>
-            <button class="btn btn-primary" [disabled]="bookForm.invalid" type="submit">Enregistrer</button>
+            <div class="form-group">
+                <h4>Ajouter une image</h4>
+                <input type="file" (change)="detectFiles($event)" class="form-control upload-file" accept="image/*">
+                <!-- uploading progress bar -->
+                <div class="progress" *ngIf="fileIsUploading">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="progressPercent" aria-valuemin="0"
+                        aria-valuemax="100" style="min-width: 2em;" [ngStyle]="{'width.%': progressPercent}">
+                        {{progressPercent}}%
+                    </div>
+                </div>
+                <p class="text-success" *ngIf="fileUploaded">Fichier chargé!</p>
+            </div>
+            <button class="btn btn-primary" [disabled]="bookForm.invalid || fileIsUploading"
+                type="submit">Enregistrer</button>
         </form>
     </div>
 </div>

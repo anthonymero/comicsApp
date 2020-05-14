@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBook } from '../models/book.model';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase';
-import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +10,10 @@ export class BooksService {
 
   books: IBook[] = [];
   booksSubject = new Subject<IBook[]>();
+
+  private percent = new BehaviorSubject<number>(0);
+  uploadProgressPercent = this.percent.asObservable();
+
   constructor() { }
 
   emitBooks() {
@@ -32,9 +35,9 @@ export class BooksService {
   }
 
   // Get book by id
-  getSingleBook(id: number): Promise<IBook> {
+  getSingleBook(id: number) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref('/books/view/' + id)
+      firebase.database().ref('/books/' + id)
         .once('value').then(
           (data) => {
             resolve(data.val());
@@ -46,7 +49,7 @@ export class BooksService {
   }
 
   // Create newBook
-  createNewBook(newBook: IBook): void {
+  createNewBook(newBook: IBook) {
     this.books.push(newBook);
     this.saveBooks();
     this.emitBooks();
@@ -54,6 +57,18 @@ export class BooksService {
 
   // Remove Book
   removeBook(bookToRemove: IBook): void {
+    if (bookToRemove.photo) {
+      const storageRef = firebase.storage().refFromURL(bookToRemove.photo);
+      storageRef.delete().then(
+        () => {
+          console.log('Photo supprimée !');
+        }
+      ).catch(
+        (error) => {
+          console.log('fichier non trouvé' + error);
+        }
+      );
+    }
     const bookToRemoveIndex: number = this.books.findIndex(
       (book) => {
         if (book === bookToRemove) {
@@ -65,8 +80,32 @@ export class BooksService {
     this.saveBooks();
     this.emitBooks();
   }
+
+  // Upload file
+  uploadFile(file: File) {
+    return new Promise((resolve, reject) => {
+      const almostUniqueFileName = Date.now().toString();
+      const upload = firebase.storage().ref()
+        .child('images/' + almostUniqueFileName + file.name)
+        .put(file);
+
+      upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {
+          const progress = (upload.snapshot.bytesTransferred / upload.snapshot.totalBytes) * 100;
+          this.percent.next(progress);
+          console.log('chargement...', progress);
+        },
+        (error) => {
+          console.log('Erreur de chargement' + error);
+          reject(error);
+        },
+        () => {
+          resolve(upload.snapshot.ref.getDownloadURL());
+        }
+      );
+    });
+  }
   // Update book
-  // Delete book
 }
 
 

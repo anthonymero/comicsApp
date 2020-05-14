@@ -22,7 +22,8 @@ export class SingleBookComponent implements OnInit {
     this.book = {
       title: '',
       author: '',
-      editor: ''
+      editor: '',
+      photo: ''
     };
     const id = this.route.snapshot.params.id;
     this.booksService.getSingleBook(+id).then(

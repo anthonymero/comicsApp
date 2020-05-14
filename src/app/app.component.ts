@@ -7,7 +7,6 @@ import * as firebase from 'firebase';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'bdtheque';
   constructor() {
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -17,7 +16,7 @@ export class AppComponent {
       projectId: 'bdtheque-96ba0',
       storageBucket: 'bdtheque-96ba0.appspot.com',
       messagingSenderId: '659396303259',
-      appId: '1:659396303259:web:2f1ed4283091507045293e'
+      appId: '1:659396303259:web:f70e9b601f10231c45293e'
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);

@@ -11,6 +11,10 @@ import { BooksService } from 'src/app/services/books.service';
 export class BookFormComponent implements OnInit {
 
   bookForm: FormGroup;
+  fileIsUploading = false;
+  fileUrl: string;
+  fileUploaded = false;
+  progressPercent: number;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -20,6 +24,7 @@ export class BookFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.booksService.uploadProgressPercent.subscribe(progressPercent => this.progressPercent = progressPercent);
   }
 
   initForm(): void {
@@ -35,8 +40,25 @@ export class BookFormComponent implements OnInit {
       title: this.bookForm.value.title,
       author: this.bookForm.value.author,
       editor: this.bookForm.value.editor,
+      photo: this.fileUrl ? this.fileUrl : '',
+
     });
     this.router.navigate(['/books']);
+  }
+
+  onUploadFile(file: File) {
+    this.fileIsUploading = true;
+    this.booksService.uploadFile(file).then(
+      (url: string) => {
+        this.fileUrl = url;
+        this.fileIsUploading = false;
+        this.fileUploaded = true;
+      }
+    );
+  }
+
+  detectFiles(event) {
+    this.onUploadFile(event.target.files[0]);
   }
 
 }
