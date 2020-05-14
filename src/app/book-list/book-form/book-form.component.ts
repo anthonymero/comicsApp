@@ -29,17 +29,27 @@ export class BookFormComponent implements OnInit {
 
   initForm(): void {
     this.bookForm = this.fb.group({
+      editor: ['', Validators.required],
+      collection: ['', Validators.required],
+      volume: [ '', Validators.required],
       title: ['', Validators.required],
-      author: ['', Validators.required],
-      editor: [''],
+      year: ['', Validators.required],
+      scenario: ['', Validators.required],
+      drawing: ['', Validators.required],
+      colors: ['', Validators.required],
     });
   }
 
   onSubmit() {
     this.booksService.createNewBook({
-      title: this.bookForm.value.title,
-      author: this.bookForm.value.author,
       editor: this.bookForm.value.editor,
+      collection: this.bookForm.value.collection,
+      volume: this.bookForm.value.volume,
+      title: this.bookForm.value.title,
+      year: this.bookForm.value.year,
+      scenario: this.bookForm.value.scenario,
+      drawing: this.bookForm.value.drawing,
+      colors: this.bookForm.value.colors,
       photo: this.fileUrl ? this.fileUrl : '',
 
     });

@@ -20,9 +20,14 @@ export class SingleBookComponent implements OnInit {
 
   ngOnInit() {
     this.book = {
-      title: '',
-      author: '',
       editor: '',
+      collection: '',
+      volume: '',
+      title: '',
+      year: '',
+      scenario: '',
+      drawing: '',
+      colors: '',
       photo: ''
     };
     const id = this.route.snapshot.params.id;
