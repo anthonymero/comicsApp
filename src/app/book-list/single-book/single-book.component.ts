@@ -21,7 +21,6 @@ export class SingleBookComponent implements OnInit {
   ngOnInit() {
     this.book = {
       editor: '',
-      collection: '',
       volume: '',
       title: '',
       year: '',
