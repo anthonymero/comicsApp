@@ -35,7 +35,7 @@ export class CollectionsService {
   // Get collection by id
   getCollectionById(id: number) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref('/collections' + id)
+      firebase.database().ref('/collections/' + id)
         .once('value').then(
           (data) => {
             resolve(data.val());
