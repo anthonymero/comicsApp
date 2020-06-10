@@ -1,0 +1,23 @@
+<div class="row single-collection">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-6 single-book-description">
+                <h1>{{collection.name}}</h1>
+                <h3>Editions: {{collection.editor}}</h3>
+                <p>Série {{collection.state}}</p>
+                <p>Albums {{collection.volumeCount}}</p>
+
+
+
+            </div>
+            <div class="col-xs-6">
+                <!-- Todo get first collection album cover -->
+                <!-- <div class="cover" [ngStyle]="{'background-image': getBackgroundImage(book)}">
+                </div> -->
+            </div>
+
+        </div>
+
+        <button class="btn btn-default" (click)="onBack()">Retour</button>
+    </div>
+</div>

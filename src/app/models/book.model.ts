@@ -1,6 +1,8 @@
+import { ICollection } from './collection.model';
 export interface IBook {
     editor: string;
-    collection: string;
+    // Serie
+    collection?: ICollection;
     // Tome
     volume: string;
     title: string;
