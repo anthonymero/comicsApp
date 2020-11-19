@@ -17,6 +17,13 @@ import { CollectionListComponent } from './collection-list/collection-list.compo
 import { CollectionFormComponent } from './collection-list/collection-form/collection-form.component';
 import { SingleCollectionComponent } from './collection-list/single-collection/single-collection.component';
 
+// angularfire imports
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
+// environment import
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +43,8 @@ import { SingleCollectionComponent } from './collection-list/single-collection/s
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
   ],
   providers: [
     AuthService,
