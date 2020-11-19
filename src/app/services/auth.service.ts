@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  userData: firebase.User;
 
   constructor(
     public afs: AngularFirestore,
@@ -22,24 +21,37 @@ export class AuthService {
     // Saving user data in localstorage when logged in  and setting up null when logged out
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
+        localStorage.setItem('user', JSON.stringify(user));
       } else {
         localStorage.setItem('user', null);
       }
     });
-   }
-
-
-  // // Create new user
-   async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
-      return await this.afAuth.createUserWithEmailAndPassword(email, password);
   }
 
+
+  // Create new user
+  async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    return await this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  // Signup
+  async signUpUser(email: string, password: string) {
+    // create user
+    const user = await this.createNewUser(email, password);
+    // if ok send verification mail
+    if (!!user) {
+      this.sendVerificationMail(user);
+    }
+  }
 
   // Signin user with email password
   async signInUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
     return await this.afAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  // Send email verification to new user
+  async sendVerificationMail(user): Promise<void> {
+    await firebase.auth().currentUser.sendEmailVerification();
   }
 
   // Signout user
