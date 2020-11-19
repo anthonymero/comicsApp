@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -44,9 +44,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -94,7 +92,6 @@
               "src/assets"
             ],
             "styles": [
-              // "../node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -126,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "bdtheque"
+    }
+  },
+  "defaultProject": "bdtheque",
+  "cli": {
+    "analytics": false
+  }
 }

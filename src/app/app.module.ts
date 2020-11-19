@@ -43,8 +43,9 @@ import { environment } from '../environments/environment';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+
   ],
   providers: [
     AuthService,
