@@ -33,10 +33,10 @@ export class BookFormComponent implements OnInit {
       collection: ['', Validators.required],
       volume: [ '', Validators.required],
       title: ['', Validators.required],
-      year: ['', Validators.required],
-      scenario: ['', Validators.required],
-      drawing: ['', Validators.required],
-      colors: ['', Validators.required],
+      year: [''],
+      scenario: [''],
+      drawing: [''],
+      colors: [''],
     });
   }
 

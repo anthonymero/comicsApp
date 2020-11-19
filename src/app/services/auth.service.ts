@@ -6,6 +6,9 @@ import * as firebase from 'firebase';
 })
 export class AuthService {
 
+  currentUser: firebase.User;
+
+
   constructor() { }
 
   // Create new user
@@ -39,5 +42,11 @@ export class AuthService {
   // Signout user
   signOutUser() {
     firebase.auth().signOut();
+  }
+
+
+
+  getCurrentUser(): firebase.User | null {
+    return firebase.auth().currentUser;
   }
 }
