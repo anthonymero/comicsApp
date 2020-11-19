@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ICollection } from '../models/collection.model';
 import { Subject } from 'rxjs';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 
 @Injectable({

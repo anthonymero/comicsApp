@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBook } from '../models/book.model';
 import { Subject, BehaviorSubject } from 'rxjs';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,10 @@ export class BooksService {
   private percent = new BehaviorSubject<number>(0);
   uploadProgressPercent = this.percent.asObservable();
 
-  constructor() { }
+  constructor() {
+
+
+  }
 
   emitBooks() {
     this.booksSubject.next(this.books);
@@ -58,7 +61,7 @@ export class BooksService {
   // Remove Book
   removeBook(bookToRemove: IBook): void {
     if (bookToRemove.photo) {
-      const storageRef = firebase.storage().refFromURL(bookToRemove.photo);
+      const storageRef =  firebase.storage().refFromURL(bookToRemove.photo);
       storageRef.delete().then(
         () => {
           console.log('Photo supprimée !');
@@ -85,11 +88,11 @@ export class BooksService {
   uploadFile(file: File) {
     return new Promise((resolve, reject) => {
       const almostUniqueFileName = Date.now().toString();
-      const upload = firebase.storage().ref()
+      const upload =  firebase.storage().ref()
         .child('images/' + almostUniqueFileName + file.name)
         .put(file);
 
-      upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      upload.on( firebase.storage.TaskEvent.STATE_CHANGED,
         () => {
           const progress = (upload.snapshot.bytesTransferred / upload.snapshot.totalBytes) * 100;
           this.percent.next(progress);

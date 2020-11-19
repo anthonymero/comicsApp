@@ -20,6 +20,7 @@ import { SingleCollectionComponent } from './collection-list/single-collection/s
 // angularfire imports
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // environment import
 import { environment } from '../environments/environment';
@@ -43,8 +44,9 @@ import { environment } from '../environments/environment';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
 
   ],
   providers: [

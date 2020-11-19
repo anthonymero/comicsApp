@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-root',
@@ -8,17 +7,5 @@ import * as firebase from 'firebase';
 })
 export class AppComponent {
   constructor() {
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: 'AIzaSyDO8iZ61J_m3eHh1A4G1wAHlMiNp-40OeI',
-      authDomain: 'bdtheque-96ba0.firebaseapp.com',
-      databaseURL: 'https://bdtheque-96ba0.firebaseio.com',
-      projectId: 'bdtheque-96ba0',
-      storageBucket: 'bdtheque-96ba0.appspot.com',
-      messagingSenderId: '659396303259',
-      appId: '1:659396303259:web:f70e9b601f10231c45293e'
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
   }
 }
