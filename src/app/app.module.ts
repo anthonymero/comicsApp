@@ -24,6 +24,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // environment import
 import { environment } from '../environments/environment';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { environment } from '../environments/environment';
     HeaderComponent,
     CollectionListComponent,
     CollectionFormComponent,
-    SingleCollectionComponent
+    SingleCollectionComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,

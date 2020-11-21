@@ -9,6 +9,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { CollectionListComponent } from './collection-list/collection-list.component';
 import { CollectionFormComponent } from './collection-list/collection-form/collection-form.component';
 import { SingleCollectionComponent } from './collection-list/single-collection/single-collection.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'auth/signin',
     component: SigninComponent
+  },
+  {
+    path: 'auth/email-verify',
+    component: VerifyEmailComponent
   },
   {
     path: 'books',
