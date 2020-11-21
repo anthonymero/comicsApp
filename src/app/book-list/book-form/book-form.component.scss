@@ -1,0 +1,27 @@
+.progress {
+
+    margin-top: 1rem;
+    &-bar {
+
+    }
+}
+
+.form-group {
+
+    .form-control {
+
+        &.upload-file {
+            padding: 0;
+        }
+    }
+}
+
+
+input[type=file]::-webkit-file-upload-button {
+    height: 100%;
+    border: 1px solid #f1f1f1;
+    background-color: #f4f4f4;
+    color: rgb(115, 115, 115);
+    font-size: small;
+    border-radius: 0.1rem;
+  }

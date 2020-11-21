@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <h2>Nouvelle collection</h2>
+        <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name" id="name">Nom de la série</label>
+                <input type="text" class="form-control" formControlName="name">
+            </div>
+
+            <div class="form-group">
+                <label for="editor" id="editor">Editeur</label>
+                <input type="text" class="form-control" formControlName="editor">
+            </div>
+
+            <div class="form-group">
+                <label for="volumeCount" id="volumeCount">Nombre de tomes</label>
+                <input type="text" class="form-control" formControlName="volumeCount">
+            </div>
+
+            <div class="form-group">
+                <label for="state" id="state">Etat</label>
+                <select type="text" class="form-control" formControlName="state">
+                    <option value="inProgress">En cours </option>
+                    <option value="completed"> Terminée</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="style" id="style">Style</label>
+                <input type="text" class="form-control" formControlName="style">
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" [disabled]="collectionForm.invalid" type="submit">Enregistrer</button>
+                <button class="btn btn-default" (click)="onCancel()">Annuler</button>
+            </div>
+
+        </form>
+    </div>
+</div>

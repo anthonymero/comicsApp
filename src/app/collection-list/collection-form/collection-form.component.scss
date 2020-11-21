@@ -1,0 +1,10 @@
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+
+  .btn:nth-child(odd) {
+    margin-right: 10px;
+  }
+}
+
+
