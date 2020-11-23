@@ -1,15 +1,18 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
 import { Observable } from 'rxjs';
+import { IUser } from '../models/user.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  userData: IUser;
 
   constructor(
     public afs: AngularFirestore,
@@ -21,7 +24,8 @@ export class AuthService {
     // Saving user data in localstorage when logged in  and setting up null when logged out
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
+        this.userData = user as IUser;
+        localStorage.setItem('user', JSON.stringify(this.userData));
       } else {
         localStorage.setItem('user', null);
       }
@@ -37,10 +41,11 @@ export class AuthService {
   // Signup
   async signUpUser(email: string, password: string) {
     // create user
-    const user = await this.createNewUser(email, password);
+    const createdUser = await this.createNewUser(email, password);
     // if ok send verification mail
-    if (!!user) {
-      this.sendVerificationMail(user);
+    if (!!createdUser) {
+      this.setUserData(createdUser.user);
+      this.sendVerificationMail();
     }
   }
 
@@ -50,7 +55,9 @@ export class AuthService {
   }
 
   // Send email verification to new user
-  async sendVerificationMail(user): Promise<void> {
+  async sendVerificationMail(): Promise<void> {
+    // TODO use this method
+    // await this.afAuth.sendSignInLinkToEmail(user.email, actionCodeSettings);
     await firebase.auth().currentUser.sendEmailVerification();
   }
 
@@ -62,6 +69,26 @@ export class AuthService {
 
   getCurrentUser(): Observable<firebase.User> {
     return this.afAuth.user;
+  }
+
+  get isLoggedIn(): boolean {
+    const user: IUser = JSON.parse(localStorage.getItem('user'));
+    return user !== null && user.emailVerified !== false;
+  }
+
+  private setUserData(user) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
+    const userData: IUser = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified
+    };
+    return userRef.set(userData, {
+      merge: true
+    });
+
   }
 
 }

@@ -1,1 +1,24 @@
-<p>verify-email works!</p>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Votre compte a bien été créé!</h2>
+
+    <div *ngIf="userData">
+      <div class="text">
+        <p>Un mail de confirmation a été envoyé à l'adresse <span>{{userData.email}}</span></p>
+        <p>Pour continuer, merci de cliquer sur le lien contenu dans cet email!</p>
+      </div>
+
+      <!-- Resend verification email -->
+      <div>
+        <button class="btn btn-primary" (click)="onResendVerificationEmail()">
+          Renvoyer l'email
+        </button>
+      </div>
+    </div>
+
+    <!-- Redirect to login -->
+    <div>
+      <p>Retour à <span routerLink="auth/signin">l'authentification</span></p>
+    </div>
+  </div>
+</div>
