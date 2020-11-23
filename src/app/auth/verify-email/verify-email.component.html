@@ -1,24 +1,22 @@
-<div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
-    <h2>Votre compte a bien été créé!</h2>
+<div class="row verify-email">
+  <div class="col-sm-8 col-sm-offset-2 verify-email-content">
+    <h2>
+      <span class="glyphicon glyphicon-thumbs-up"></span>
+      Votre compte a bien été créé!
+    </h2>
 
-    <div *ngIf="userData">
-      <div class="text">
+    <div *ngIf="userData" class="verify-email-content-text">
         <p>Un mail de confirmation a été envoyé à l'adresse <span>{{userData.email}}</span></p>
-        <p>Pour continuer, merci de cliquer sur le lien contenu dans cet email!</p>
-      </div>
-
-      <!-- Resend verification email -->
-      <div>
-        <button class="btn btn-primary" (click)="onResendVerificationEmail()">
-          Renvoyer l'email
-        </button>
-      </div>
+        <p>Pour continuer, merci de cliquer sur le lien contenu dans cet email afin de valider votre compte!</p>
     </div>
 
-    <!-- Redirect to login -->
-    <div>
-      <p>Retour à <span routerLink="auth/signin">l'authentification</span></p>
+    <!-- Resend verification email -->
+    <div class="verify-email-content-actions">
+      <button class="btn btn-primary" (click)="onResendVerificationEmail()">
+        Renvoyer l'email
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+      </button>
     </div>
+
   </div>
 </div>

@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   // Signup
-  async signUpUser(email: string, password: string) {
+  async signUpUser(email: string, password: string): Promise<void> {
     // create user
     const createdUser = await this.createNewUser(email, password);
     // if ok send verification mail
@@ -50,8 +50,9 @@ export class AuthService {
   }
 
   // Signin user with email password
-  async signInUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return await this.afAuth.signInWithEmailAndPassword(email, password);
+  async signInUser(email: string, password: string): Promise<void> {
+    await this.afAuth.signInWithEmailAndPassword(email, password);
+    await this.getCurrentUser();
   }
 
   // Send email verification to new user
@@ -67,8 +68,8 @@ export class AuthService {
   }
 
 
-  getCurrentUser(): Observable<firebase.User> {
-    return this.afAuth.user;
+  async getCurrentUser(): Promise<firebase.User> {
+    return await this.afAuth.currentUser;
   }
 
   get isLoggedIn(): boolean {
@@ -78,6 +79,7 @@ export class AuthService {
 
   private setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
+
     const userData: IUser = {
       uid: user.uid,
       email: user.email,

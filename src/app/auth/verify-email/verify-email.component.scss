@@ -1,0 +1,23 @@
+.verify-email {
+
+  &-content {
+    h2 {
+      color: #6f6f6f;
+    }
+
+    &-text {
+      border: 1px solid gray;
+      padding: 2%;
+      margin: 25px 0;
+      border-radius: 8px;
+      span {
+        font-weight: bold;
+      }
+    }
+
+    &-actions {
+
+    }
+  }
+
+}
