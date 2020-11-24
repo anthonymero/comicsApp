@@ -43,4 +43,16 @@ export class SigninComponent implements OnInit {
     );
   }
 
+  onSigninWithGoogle(): void {
+    this.authService.signinWithGoogle()
+    .then(
+      () => {
+        this.router.navigate(['/books']);
+      },
+      (error) => {
+        this.errorMessage = error;
+      }
+    );
+  }
+
 }

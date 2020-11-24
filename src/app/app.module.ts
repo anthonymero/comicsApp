@@ -17,6 +17,11 @@ import { CollectionListComponent } from './collection-list/collection-list.compo
 import { CollectionFormComponent } from './collection-list/collection-form/collection-form.component';
 import { SingleCollectionComponent } from './collection-list/single-collection/single-collection.component';
 
+// Font Awesome
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faCircle, faSquare, faSignInAlt , IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle, faGoogleWallet } from '@fortawesome/free-brands-svg-icons';
+
 // angularfire imports
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -26,6 +31,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
+const icons: IconDefinition[] = [
+  faGoogle,
+  faGoogleWallet,
+  faSignInAlt
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +59,7 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    FontAwesomeModule
 
   ],
   providers: [
@@ -58,4 +69,10 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+
+    // Add an icon to the library for convenient access in other components
+    library.addIcons(...icons);
+  }
+}

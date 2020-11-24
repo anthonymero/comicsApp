@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
-import { Observable } from 'rxjs';
 import { IUser } from '../models/user.model';
 
 
@@ -32,12 +31,6 @@ export class AuthService {
     });
   }
 
-
-  // Create new user
-  async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return await this.afAuth.createUserWithEmailAndPassword(email, password);
-  }
-
   // Signup
   async signUpUser(email: string, password: string): Promise<void> {
     // create user
@@ -60,6 +53,20 @@ export class AuthService {
     // TODO use this method
     // await this.afAuth.sendSignInLinkToEmail(user.email, actionCodeSettings);
     await firebase.auth().currentUser.sendEmailVerification();
+  }
+
+  // SignIn with Google
+  signinWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.authLogin(provider);
+  }
+
+  // Auth logic to run auth providers
+  async authLogin(provider: firebase.auth.AuthProvider): Promise<void> {
+    const result = await this.afAuth.signInWithPopup(provider);
+    if (!!result) {
+      this.setUserData(result.user);
+    }
   }
 
   // Signout user
@@ -93,4 +100,8 @@ export class AuthService {
 
   }
 
+  // Create new user
+  private async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    return await this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
 }
