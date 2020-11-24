@@ -37,7 +37,9 @@ export class SignupComponent implements OnInit {
     this.authService.signUpUser(email, password).then(
 
       () => {
-        this.router.navigate(['/books']);
+        // this.router.navigate(['/books']);
+        this.router.navigate(['auth', 'email-verify']);
+
       },
       (error) => {
         this.errorMessage = error;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import firebase from 'firebase';
 import { AuthService } from '../services/auth.service';
 @Component({
@@ -12,6 +13,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly router: Router,
   ) { }
 
   ngOnInit() {
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit {
 
   onSignOut(): void {
     this.authService.signOutUser();
+    this.router.navigate(['/auth', 'signin']);
   }
 
 }
