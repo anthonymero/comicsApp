@@ -1,4 +1,5 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class VerifyEmailComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -21,8 +23,13 @@ export class VerifyEmailComponent implements OnInit, AfterViewChecked {
     this.userData = this.authService.userData;
   }
 
-  onResendVerificationEmail() {
+  onResendVerificationEmail(): void {
     this.authService.sendVerificationMail();
+  }
+
+  onBackToSigin(): void {
+    this.authService.signOutUser();
+    this.router.navigate(['/auth', 'signin']);
   }
 
 }

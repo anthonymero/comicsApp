@@ -1,8 +1,17 @@
 .verify-email {
 
   &-content {
-    h2 {
+    &-success {
+      display: flex;
+      align-items: center;
       color: #6f6f6f;
+      font-size: 30px;
+      margin: 30px 0;
+
+      span {
+        margin-right: 10px;
+      }
+
     }
 
     &-text {
@@ -10,13 +19,15 @@
       padding: 2%;
       margin: 25px 0;
       border-radius: 8px;
+
       span {
         font-weight: bold;
       }
     }
 
     &-actions {
-
+      display: flex;
+      justify-content: space-between;
     }
   }
 
