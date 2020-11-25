@@ -1,17 +1,53 @@
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <h2>Me connecter</h2>
-        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" class="form-control" formControlName="email">
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" class="form-control" formControlName="password">
-                </div>
-            </div>
-            <button class="btn btn-primary" type="submit" [disabled]="signInForm.invalid">Connexion</button>
-        </form>
-        <p class="text-danger">{{errorMessage}}</p>
+<div class="row sigin">
+  <div class="col-md-8 col-md-offset-2 signin-content">
+
+    <div class="signin-content-card">
+      <h2>Me connecter</h2>
+
+      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" class="form-control" formControlName="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" class="form-control" formControlName="password">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-success" type="submit" [disabled]="signInForm.invalid">
+            Connexion
+            <fa-icon [icon]="['fas','sign-in-alt']"></fa-icon>
+          </button>
+        </div>
+      </form>
+      <p class="text-danger">{{errorMessage}}</p>
+
+      <!-- Connect with Google -->
+      <div class="form-group">
+        <button class="btn btn-default" (click)="onSigninWithGoogle()">
+          Log in with Google
+          <span>
+            <fa-icon [icon]="['fab','google']"></fa-icon>
+          </span>
+        </button>
+      </div>
+
+      <!-- Connect with Facebook -->
+      <div class="form-group">
+        <button class="btn btn-primary" (click)="onSigninWithFB()">
+          Log in with Facebook
+          <span>
+            <fa-icon [icon]="['fab','facebook-square']"></fa-icon>
+          </span>
+        </button>
+      </div>
+
+      <!-- Create account -->
+      <div class="signin-content-card-create-account">
+        <span>Vous n'avez pas de compte?</span>
+        <button class="btn btn-link" (click)="onRegister()">Créer un compte</button>
+      </div>
     </div>
+
+  </div>
 </div>

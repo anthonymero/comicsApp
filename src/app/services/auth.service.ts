@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
-import { Observable } from 'rxjs';
 import { IUser } from '../models/user.model';
 
 
@@ -32,19 +31,13 @@ export class AuthService {
     });
   }
 
-
-  // Create new user
-  async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return await this.afAuth.createUserWithEmailAndPassword(email, password);
-  }
-
   // Signup
-  async signUpUser(email: string, password: string): Promise<void> {
+  async signUpUser(data): Promise<void> {
     // create user
-    const createdUser = await this.createNewUser(email, password);
+    const createdUser = await this.createNewUser(data.email, data.password);
     // if ok send verification mail
     if (!!createdUser) {
-      this.setUserData(createdUser.user);
+      this.setUserData(createdUser.user, data.displayName);
       this.sendVerificationMail();
     }
   }
@@ -62,11 +55,30 @@ export class AuthService {
     await firebase.auth().currentUser.sendEmailVerification();
   }
 
+  // SignIn with Google
+  async signinWithGoogle(): Promise<void> {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return await this.authLogin(provider);
+  }
+
+  // Signin with Facebook
+  async signinWithFB() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return await this.authLogin(provider);
+  }
+
+  // Auth logic to run auth providers
+  async authLogin(provider: firebase.auth.AuthProvider): Promise<void> {
+    const result = await this.afAuth.signInWithPopup(provider);
+    if (!!result) {
+      this.setUserData(result.user);
+    }
+  }
+
   // Signout user
   signOutUser() {
     this.afAuth.signOut();
   }
-
 
   async getCurrentUser(): Promise<firebase.User> {
     return await this.afAuth.currentUser;
@@ -77,20 +89,27 @@ export class AuthService {
     return user !== null && user.emailVerified !== false;
   }
 
-  private setUserData(user) {
+  ////////////////////////////////////////////////////
+  // Private methods
+  ////////////////////////////////////////////////////
+
+  private setUserData(user, displayName?: string) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
 
     const userData: IUser = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      displayName: user.displayName || displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified
     };
     return userRef.set(userData, {
       merge: true
     });
-
   }
 
+  // Create new user
+  private async createNewUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    return await this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
 }
