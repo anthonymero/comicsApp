@@ -32,12 +32,12 @@ export class AuthService {
   }
 
   // Signup
-  async signUpUser(email: string, password: string): Promise<void> {
+  async signUpUser(data): Promise<void> {
     // create user
-    const createdUser = await this.createNewUser(email, password);
+    const createdUser = await this.createNewUser(data.email, data.password);
     // if ok send verification mail
     if (!!createdUser) {
-      this.setUserData(createdUser.user);
+      this.setUserData(createdUser.user, data.displayName);
       this.sendVerificationMail();
     }
   }
@@ -93,13 +93,13 @@ export class AuthService {
   // Private methods
   ////////////////////////////////////////////////////
 
-  private setUserData(user) {
+  private setUserData(user, displayName?: string) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
 
     const userData: IUser = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      displayName: user.displayName || displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified
     };

@@ -25,16 +25,20 @@ export class SignupComponent implements OnInit {
 
   initForm() {
     this.signUpForm = this.fb.group({
+      displayName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]]
     });
   }
 
   onSubmit() {
-    const email = this.signUpForm.get('email').value;
-    const password = this.signUpForm.get('password').value;
+    const data = {
+      displayName: this.signUpForm.get('displayName').value,
+      email: this.signUpForm.get('email').value,
+      password: this.signUpForm.get('password').value,
+    };
     // this.authService.createNewUser(email, password).then(
-    this.authService.signUpUser(email, password).then(
+    this.authService.signUpUser(data).then(
 
       () => {
         // this.router.navigate(['/books']);
