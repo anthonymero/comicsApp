@@ -56,9 +56,15 @@ export class AuthService {
   }
 
   // SignIn with Google
-  signinWithGoogle() {
+  async signinWithGoogle(): Promise<void> {
     const provider = new firebase.auth.GoogleAuthProvider();
-    return this.authLogin(provider);
+    return await this.authLogin(provider);
+  }
+
+  // Signin with Facebook
+  async signinWithFB() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return await this.authLogin(provider);
   }
 
   // Auth logic to run auth providers
@@ -74,7 +80,6 @@ export class AuthService {
     this.afAuth.signOut();
   }
 
-
   async getCurrentUser(): Promise<firebase.User> {
     return await this.afAuth.currentUser;
   }
@@ -83,6 +88,10 @@ export class AuthService {
     const user: IUser = JSON.parse(localStorage.getItem('user'));
     return user !== null && user.emailVerified !== false;
   }
+
+  ////////////////////////////////////////////////////
+  // Private methods
+  ////////////////////////////////////////////////////
 
   private setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.id}`);
@@ -97,7 +106,6 @@ export class AuthService {
     return userRef.set(userData, {
       merge: true
     });
-
   }
 
   // Create new user

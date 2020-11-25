@@ -20,7 +20,7 @@ import { SingleCollectionComponent } from './collection-list/single-collection/s
 // Font Awesome
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faCircle, faSquare, faSignInAlt , IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faGoogle, faGoogleWallet } from '@fortawesome/free-brands-svg-icons';
+import { faGoogle, faGoogleWallet, faFacebook, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 
 // angularfire imports
 import { AngularFireModule } from '@angular/fire';
@@ -34,7 +34,9 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 const icons: IconDefinition[] = [
   faGoogle,
   faGoogleWallet,
-  faSignInAlt
+  faSignInAlt,
+  faFacebook,
+  faFacebookSquare
 ];
 @NgModule({
   declarations: [

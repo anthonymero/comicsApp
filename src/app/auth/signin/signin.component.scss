@@ -1,0 +1,37 @@
+.signin {
+
+  &-content {
+    margin-top: 5%;
+    &-card {
+      width: 380px;
+      margin: 0 auto;
+      border: solid 1px lightgray;
+      border-radius: 5px;
+      padding: 20px;
+
+      h2 {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      form {
+
+      }
+
+      button {
+        width: 100%;
+      }
+
+      &-create-account {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button {
+          width: auto;
+          padding: 0 0 0 5px;
+        }
+      }
+    }
+  }
+
+}
