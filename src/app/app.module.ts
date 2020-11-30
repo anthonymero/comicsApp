@@ -16,6 +16,8 @@ import { BooksService } from './services/books.service';
 import { CollectionListComponent } from './collection-list/collection-list.component';
 import { CollectionFormComponent } from './collection-list/collection-form/collection-form.component';
 import { SingleCollectionComponent } from './collection-list/single-collection/single-collection.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { UsersService } from './services/users.service';
 
 // Font Awesome
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -29,7 +31,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // environment import
 import { environment } from '../environments/environment';
-import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -68,6 +69,7 @@ const icons: IconDefinition[] = [
     AuthService,
     BooksService,
     AuthGuardService,
+    UsersService
   ],
   bootstrap: [AppComponent]
 })
