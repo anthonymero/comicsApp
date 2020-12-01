@@ -31,6 +31,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // environment import
 import { environment } from '../environments/environment';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -51,7 +52,8 @@ const icons: IconDefinition[] = [
     CollectionListComponent,
     CollectionFormComponent,
     SingleCollectionComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
