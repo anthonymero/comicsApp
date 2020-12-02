@@ -1,0 +1,39 @@
+.user-profile {
+
+  h2 {
+    text-align: center;
+  }
+
+  &-content {
+    margin-top: 25px;
+
+    &-infos {
+
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding: 25px;
+      margin: 25px 0;
+      min-height: 150px;
+      height: 100%;
+
+      &-picture {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    &-action {
+      display: flex;
+      justify-content: flex-end;
+
+      button {}
+
+    }
+
+
+
+  }
+
+  &-loader {}
+
+}

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IUser } from '../models/user.model';
 
@@ -11,6 +12,7 @@ export class UsersService {
 
   constructor(
     private readonly afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
   ) {
   }
 
@@ -20,6 +22,12 @@ export class UsersService {
   getUser(uid: string){
     return this.getUsersCollection().doc(uid).get();
   }
+
+  getCurrentUserId(): Promise<string> {
+    return this.afAuth.currentUser.then((user) => user.uid);
+  }
+
+
 
   // Create User in Firestore db
   async createUser(user: IUser, displayName?: string) {

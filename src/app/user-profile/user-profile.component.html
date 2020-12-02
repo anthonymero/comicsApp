@@ -1,1 +1,41 @@
-<p>user-profile works!</p>
+<div class="user-profile">
+
+  <h2>My profile</h2>
+
+  <ng-container *ngIf="currentUser$; then authenticated else loading">
+
+  </ng-container>
+
+  <ng-template #authenticated>
+
+    <div class="user-profile-content" *ngIf="currentUser$ | async as user">
+
+      <div class="row user-profile-content-infos">
+        <div class="col-xs-12 col-sm-4 ">
+          <div class="user-profile-content-infos-picture">
+            <img [src]="user.photoURL" alt="profile-picture" class="img-circle">
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <p>{{user.displayName}}</p>
+        </div>
+      </div>
+
+      <div class="user-profile-content-action">
+            <button class="btn btn-danger" (click)="onDeleteProfile()">Supprimer mon profil</button>
+      </div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #loading>
+    <div class="row user-profile-content">
+      <div class="user-profile-loader">
+        LOADER ...
+      </div>
+    </div>
+
+  </ng-template>
+
+</div>
