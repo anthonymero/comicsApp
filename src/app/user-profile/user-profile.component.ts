@@ -52,7 +52,7 @@ export class UserProfileComponent implements OnInit {
       height: '350px',
       width: '450px',
       data: {
-        name: 'delete my account',
+        name: 'deleteMyAccount',
         title: 'Etes-vous certain de vouloir supprimer votre compte?',
         description: 'Cette action suprimera définitivement votre compte utilisateur, toutes vos données liées à ce compte seront également supprimées.',
         actionButtonTxt: 'Confirmer',
