@@ -38,6 +38,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 // environment import
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularMaterialModule } from './app-angular-material.module';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -73,6 +74,7 @@ const icons: IconDefinition[] = [
     AngularFirestoreModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
+    AngularMaterialModule
 
   ],
   providers: [
