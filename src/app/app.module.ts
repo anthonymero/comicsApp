@@ -39,6 +39,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './app-angular-material.module';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -81,8 +82,10 @@ const icons: IconDefinition[] = [
     AuthService,
     BooksService,
     AuthGuardService,
-    UsersService
+    UsersService,
+    // {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
+  entryComponents: [ConfirmModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
