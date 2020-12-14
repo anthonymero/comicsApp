@@ -19,7 +19,7 @@ export class UsersService {
   // Get all users
 
   // Get User by id
-  getUser(uid: string){
+  getUser(uid: string) {
     return this.getUsersCollection().doc(uid).get();
   }
 
@@ -50,7 +50,10 @@ export class UsersService {
   async updateUser(user: Partial<IUser>): Promise<void> {
     const uid = await this.getCurrentUserId();
     const userRef = this.getUsersCollection().doc(uid);
-    return await userRef.update(user);
+    await userRef.update(user)
+    // TODO notification service
+      .then(() => alert('Profile updated successfully !!'))
+      .catch((err) => alert(err));
   }
 
   // Delete User

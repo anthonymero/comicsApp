@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 import { IDialogData } from '../models/dialogData.model';
 import { IUser } from '../models/user.model';
@@ -18,6 +17,7 @@ export class UserProfileComponent implements OnInit {
 
   currentUser$: Observable<IUser>;
   userProfileForm: FormGroup;
+  comicsStyles: string[];
 
 
   constructor(
@@ -30,6 +30,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser$ = this.authService.user$;
+    this.comicsStyles = ['aventure', 'biographie', 'fantastique / héroïc-fantasy', 'historique', 'humour', 'jeunesse', 'roman graphique', 'science-fiction', 'polar et thriller', 'western'];
     this.initForm();
   }
 
@@ -43,7 +44,7 @@ export class UserProfileComponent implements OnInit {
 
   onSubmit() {
     const formValues: Partial<IUser> = this.userProfileForm.value;
-    this.userService.updateUser(formValues).catch(err => console.log(err));
+    this.userService.updateUser(formValues);
   }
 
   async onDeleteProfile(): Promise<void> {
@@ -74,7 +75,5 @@ export class UserProfileComponent implements OnInit {
     this.matDialog.open(ConfirmModalComponent, dialogConfig);
 
   }
-
-
 
 }
