@@ -12,6 +12,7 @@ import { UsersService } from 'src/app/services/users.service';
 export class UserProfilePictureModalComponent implements OnInit {
 
   fileToUpload: File;
+  updatePictureDisabled = true;
 
   constructor(
     public dialogRef: MatDialogRef<UserProfilePictureModalComponent>,
@@ -24,14 +25,15 @@ export class UserProfilePictureModalComponent implements OnInit {
   }
 
   onAddPicture() {
-    this.userService.updateProfilePicture(this.fileToUpload);
+    if (!!this.fileToUpload) {
+      this.userService.updateProfilePicture(this.fileToUpload);
 
+    }
   }
 
   detectFiles(event) {
     this.fileToUpload = event.target.files[0];
-    console.log(this.fileToUpload);
-    // this.onAddPicture(event.target.files[0]);
+    this.updatePictureDisabled = !(!!this.fileToUpload);
   }
 
   closeDialog(): void {
