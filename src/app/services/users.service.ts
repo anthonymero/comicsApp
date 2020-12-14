@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { catchError } from 'rxjs/operators';
 import { IUser } from '../models/user.model';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class UsersService {
 
   constructor(
     private readonly afs: AngularFirestore,
+    private readonly storageService: StorageService,
     public afAuth: AngularFireAuth,
   ) {
   }
@@ -51,9 +54,21 @@ export class UsersService {
     const uid = await this.getCurrentUserId();
     const userRef = this.getUsersCollection().doc(uid);
     await userRef.update(user)
-    // TODO notification service
+      // TODO notification service
       .then(() => alert('Profile updated successfully !!'))
       .catch((err) => alert(err));
+  }
+
+  // Update profile picture
+  async updateProfilePicture(file: File) {
+    const mediaFolderPath = `images/${(await this.afAuth.currentUser).email}/profile/`;
+    const { downloadUrl$, uploadUrl$ } = this.storageService.uploadFileAndGetMetadata(mediaFolderPath, file);
+    downloadUrl$.pipe(
+      catchError((err) => {
+        alert(err);
+      }),
+    )
+    .subscribe((downloadUrl) => {});
   }
 
   // Delete User

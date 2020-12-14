@@ -27,19 +27,20 @@ import { BooksService } from './services/books.service';
 
 // Font Awesome
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faCircle, faSquare, faSignInAlt, faPencilAlt, IconDefinition, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSignInAlt, faPencilAlt, IconDefinition, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle, faGoogleWallet, faFacebook, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 
 // angularfire imports
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 // environment import
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './app-angular-material.module';
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { UserProfilePictureModalComponent } from './user-profile/user-profile-picture-modal/user-profile-picture-modal.component';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -65,7 +66,8 @@ const icons: IconDefinition[] = [
     SingleCollectionComponent,
     VerifyEmailComponent,
     UserProfileComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    UserProfilePictureModalComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +78,7 @@ const icons: IconDefinition[] = [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
     AngularMaterialModule

@@ -7,6 +7,7 @@ import { IDialogData } from '../models/dialogData.model';
 import { IUser } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { UsersService } from '../services/users.service';
+import { UserProfilePictureModalComponent } from './user-profile-picture-modal/user-profile-picture-modal.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -51,12 +52,17 @@ export class UserProfileComponent implements OnInit {
     // DELETE PROFIL in firestore with current user id
     const uid = await this.userService.getCurrentUserId();
     // Open warning modal with confirm button
-    this.openModal(uid);
+    this.openConfirmModal(uid);
+  }
+
+  onUpdateProfilePicture(): void {
+    this.openUserPictureModal();
+
   }
 
 
 
-  openModal(uid): void {
+  openConfirmModal(uid): void {
     const dialogData: IDialogData = {
       name: 'deleteMyAccount',
       title: 'Etes-vous certain de vouloir supprimer votre compte?',
@@ -67,13 +73,32 @@ export class UserProfileComponent implements OnInit {
 
     const dialogConfig: MatDialogConfig = {
       disableClose: true,
-      id: 'confirm-modal',
+      id: 'confirmation-modal',
       height: '350px',
       width: '450px',
       data: dialogData,
     };
     this.matDialog.open(ConfirmModalComponent, dialogConfig);
 
+  }
+
+  openUserPictureModal(): void {
+    const dialogData: IDialogData = {
+      name: 'UpdateMyPicture',
+      title: 'Mettre ma photo de profil à jour',
+      description: '',
+      actionButtonTxt: 'Enregistrer ma photo',
+      uid: undefined,
+    };
+
+    const dialogConfig: MatDialogConfig = {
+      disableClose: false,
+      id: 'update-profile-picture-modal',
+      height: '350px',
+      width: '450px',
+      data: dialogData,
+    };
+    this.matDialog.open(UserProfilePictureModalComponent, dialogConfig);
   }
 
 }

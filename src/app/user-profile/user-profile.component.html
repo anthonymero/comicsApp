@@ -12,7 +12,7 @@
 
       <div class="row user-profile-content-infos">
         <div class="col-xs-12 col-sm-2 ">
-          <div class="user-profile-content-infos-picture">
+          <div class="user-profile-content-infos-picture" (click)="onUpdateProfilePicture()">
             <img [src]="user.photoURL" alt="profile-picture" class="img-circle">
             <div class="user-profile-content-infos-picture-edit">
               <fa-icon [icon]="['fas','pencil-alt']"></fa-icon>

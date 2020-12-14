@@ -1,0 +1,18 @@
+<div class="user-profile-picture-modal">
+
+  <h2 mat-dialog-title class="user-profile-picture-modal-title">
+    {{dialogData.title}}
+  </h2>
+
+  <mat-dialog-content class="user-profile-picture-modal-content">
+    {{dialogData.description}}
+    <input type="file" (change)="detectFiles($event)" class="form-control upload-file" accept="image/*">
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="user-profile-picture-modal-content-actions">
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial> {{dialogData.actionButtonTxt}}</button>
+    <button mat-button mat-dialog-close>Annuler</button>
+
+  </mat-dialog-actions>
+
+</div>
