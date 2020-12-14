@@ -27,7 +27,7 @@ import { BooksService } from './services/books.service';
 
 // Font Awesome
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faCircle, faSquare, faSignInAlt , IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faSquare, faSignInAlt, faPencilAlt, IconDefinition, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle, faGoogleWallet, faFacebook, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 
 // angularfire imports
@@ -46,7 +46,10 @@ const icons: IconDefinition[] = [
   faGoogleWallet,
   faSignInAlt,
   faFacebook,
-  faFacebookSquare
+  faFacebookSquare,
+  faPencilAlt,
+  faEnvelope,
+  faUser
 ];
 @NgModule({
   declarations: [

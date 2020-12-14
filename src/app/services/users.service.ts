@@ -47,14 +47,19 @@ export class UsersService {
   }
 
   // Update User
-  async updateUser(user: IUser): Promise<void> {
-    const userRef = this.getUsersCollection().doc(user.uid);
+  async updateUser(user: Partial<IUser>): Promise<void> {
+    const uid = await this.getCurrentUserId();
+    const userRef = this.getUsersCollection().doc(uid);
     return await userRef.update(user);
   }
 
   // Delete User
   async deleteUser(uid: string): Promise<void> {
+    const currentUser = await this.afAuth.currentUser;
     await this.getUsersCollection().doc(uid).delete();
+    await currentUser.delete().catch((error) => {
+      console.log('err', error);
+    });
   }
 
 

@@ -45,7 +45,7 @@ export class AuthService {
     if (!!userAuthentication) {
       // create user in firestore db
       await this.userService.createUser(userAuthentication.user, data.displayName);
-      // this.sendVerificationMail();
+      this.sendVerificationMail();
     }
   }
 

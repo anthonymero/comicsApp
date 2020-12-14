@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { IDialogData } from '../models/dialogData.model';
 import { IUser } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { UsersService } from '../services/users.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,50 +17,64 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
 export class UserProfileComponent implements OnInit {
 
   currentUser$: Observable<IUser>;
+  userProfileForm: FormGroup;
 
 
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,
-    private readonly router: Router,
+    private fb: FormBuilder,
     private matDialog: MatDialog,
 
   ) { }
 
   ngOnInit(): void {
     this.currentUser$ = this.authService.user$;
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.userProfileForm = this.fb.group({
+      displayName: [''],
+      favoriteCollection: [''],
+      favoriteStyle: [''],
+    });
+  }
+
+  onSubmit() {
+    const formValues: Partial<IUser> = this.userProfileForm.value;
+    this.userService.updateUser(formValues).catch(err => console.log(err));
   }
 
   async onDeleteProfile(): Promise<void> {
-    // Open warning modal with confirm button
-    this.openModal();
     // DELETE PROFIL in firestore with current user id
     const uid = await this.userService.getCurrentUserId();
-
-    if (!!uid) {
-      // this.userService.deleteUser(uid);
-      // TODO success message
-
-      // this.authService.signOutUser();
-      // this.router.navigate(['']);
-
-    }
+    // Open warning modal with confirm button
+    this.openModal(uid);
   }
 
-  openModal(): void {
+
+
+  openModal(uid): void {
+    const dialogData: IDialogData = {
+      name: 'deleteMyAccount',
+      title: 'Etes-vous certain de vouloir supprimer votre compte?',
+      description: 'Cette action suprimera définitivement votre compte utilisateur, toutes vos données liées à ce compte seront également supprimées.',
+      actionButtonTxt: 'Confirmer',
+      uid,
+    };
+
     const dialogConfig: MatDialogConfig = {
       disableClose: true,
       id: 'confirm-modal',
       height: '350px',
       width: '450px',
-      data: {
-        name: 'deleteMyAccount',
-        title: 'Etes-vous certain de vouloir supprimer votre compte?',
-        description: 'Cette action suprimera définitivement votre compte utilisateur, toutes vos données liées à ce compte seront également supprimées.',
-        actionButtonTxt: 'Confirmer',
-      },
+      data: dialogData,
     };
     this.matDialog.open(ConfirmModalComponent, dialogConfig);
+
   }
+
+
 
 }

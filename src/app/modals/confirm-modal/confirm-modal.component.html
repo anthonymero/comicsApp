@@ -10,7 +10,7 @@
 
   <mat-dialog-actions align="end" class="confirm-modal-content-actions" >
     <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial> {{dialogData.actionButtonTxt}}</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="actionFunction()"> {{dialogData.actionButtonTxt}}</button>
   </mat-dialog-actions>
 
 </div>

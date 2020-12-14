@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ModalActionsService } from 'src/app/services/modal-actions.service';
 import { IDialogData } from '../../models/dialogData.model';
 
 @Component({
@@ -11,7 +12,7 @@ export class ConfirmModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmModalComponent>,
-    // TODO dialogData model
+    private readonly modalActionsService: ModalActionsService,
     @Inject(MAT_DIALOG_DATA) public dialogData: IDialogData,
   ) {
     console.log(this.dialogData);
@@ -21,7 +22,7 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   actionFunction(): void {
-    alert('I am a work in progress');
+    this.modalActionsService.modalAction(this.dialogData);
     this.closeDialog();
   }
 
