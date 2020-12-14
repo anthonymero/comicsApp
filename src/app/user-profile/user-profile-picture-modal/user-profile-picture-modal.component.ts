@@ -11,6 +11,8 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class UserProfilePictureModalComponent implements OnInit {
 
+  fileToUpload: File;
+
   constructor(
     public dialogRef: MatDialogRef<UserProfilePictureModalComponent>,
     private readonly modalActionsService: ModalActionsService,
@@ -21,13 +23,15 @@ export class UserProfilePictureModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddPicture(file: File) {
-    this.userService.updateProfilePicture(file);
+  onAddPicture() {
+    this.userService.updateProfilePicture(this.fileToUpload);
 
   }
 
   detectFiles(event) {
-    this.onAddPicture(event.target.files[0]);
+    this.fileToUpload = event.target.files[0];
+    console.log(this.fileToUpload);
+    // this.onAddPicture(event.target.files[0]);
   }
 
   closeDialog(): void {

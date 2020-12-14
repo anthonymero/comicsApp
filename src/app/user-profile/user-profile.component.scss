@@ -17,6 +17,8 @@
       height: 100%;
 
       &-picture {
+        height: 9.6rem;
+        width: 9.6rem;
 
         &-edit {
           position: absolute;
@@ -33,6 +35,8 @@
         }
 
         img {
+          height: 100%;
+          width: 100%;
           transition: all 0.2s;
 
           &:hover {

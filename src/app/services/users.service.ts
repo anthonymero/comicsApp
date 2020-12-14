@@ -68,7 +68,9 @@ export class UsersService {
         alert(err);
       }),
     )
-    .subscribe((downloadUrl) => {});
+    .subscribe(async (downloadUrl) => {
+      await this.updateUser({photoURL: downloadUrl});
+    });
   }
 
   // Delete User
