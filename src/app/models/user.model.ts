@@ -3,6 +3,10 @@ export interface IUser {
   uid: string;
   email: string;
   displayName: string;
-  photoURL?: string;
+  customDisplayName?: string;
   emailVerified: boolean;
+  photoURL?: string;
+  customPhotoURL?: string;
+  favoriteCollection?: string;
+  favoriteStyle?: string;
 }
