@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { catchError } from 'rxjs/operators';
 import { IUser } from '../models/user.model';
 import { StorageService } from './storage.service';
 
@@ -62,14 +61,10 @@ export class UsersService {
   // Update profile picture
   async updateProfilePicture(file: File) {
     const mediaFolderPath = `images/${(await this.afAuth.currentUser).email}/profile/`;
-    const { downloadUrl$, uploadUrl$ } = this.storageService.uploadFileAndGetMetadata(mediaFolderPath, file);
-    downloadUrl$.pipe(
-      catchError((err) => {
-        alert(err);
-      }),
-    )
+    const { downloadUrl$, uploadProgress$ } = this.storageService.uploadFileAndGetMetadata(mediaFolderPath, file);
+    downloadUrl$.pipe()
     .subscribe(async (downloadUrl) => {
-      await this.updateUser({photoURL: downloadUrl});
+      await this.updateUser({customPhotoURL: downloadUrl});
     });
   }
 

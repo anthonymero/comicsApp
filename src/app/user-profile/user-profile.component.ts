@@ -37,7 +37,7 @@ export class UserProfileComponent implements OnInit {
 
   initForm(): void {
     this.userProfileForm = this.fb.group({
-      displayName: [''],
+      customDisplayName: [''],
       favoriteCollection: [''],
       favoriteStyle: [''],
     });
