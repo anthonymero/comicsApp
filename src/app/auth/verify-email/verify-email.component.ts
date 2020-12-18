@@ -1,5 +1,7 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { IUser } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -7,9 +9,9 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './verify-email.component.html',
   styleUrls: ['./verify-email.component.scss']
 })
-export class VerifyEmailComponent implements OnInit, AfterViewChecked {
+export class VerifyEmailComponent implements OnInit {
 
-  userData;
+  user$: Observable<IUser>;
 
   constructor(
     private readonly authService: AuthService,
@@ -17,11 +19,9 @@ export class VerifyEmailComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
+    this.user$ = this.authService.user$;
   }
 
-  ngAfterViewChecked(): void {
-    this.userData = this.authService.userData;
-  }
 
   onResendVerificationEmail(): void {
     this.authService.sendVerificationMail();

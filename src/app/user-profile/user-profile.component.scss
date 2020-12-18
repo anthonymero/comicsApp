@@ -1,0 +1,68 @@
+.user-profile {
+
+  h2 {
+    text-align: center;
+  }
+
+  &-content {
+    margin-top: 25px;
+
+    &-infos {
+
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding: 25px;
+      margin: 25px 0;
+      min-height: 150px;
+      height: 100%;
+
+      &-picture {
+        height: 9.6rem;
+        width: 9.6rem;
+
+        &-edit {
+          position: absolute;
+          height: 24px;
+          bottom: 1.6rem;
+          left: 9rem;
+          background-color: #fff;
+          border-radius: 50%;
+          border: 1px solid gray;
+          width: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        img {
+          height: 100%;
+          width: 100%;
+          transition: all 0.2s;
+
+          &:hover {
+            cursor: pointer;
+            filter: drop-shadow(0 0 0.5rem);
+
+          }
+        }
+
+      }
+    }
+
+    &-action {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        margin-left: 1rem;
+      }
+
+    }
+
+
+
+  }
+
+  &-loader {}
+
+}

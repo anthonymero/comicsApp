@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebaseConfig: {
+  firebaseConfig : {
     apiKey: 'AIzaSyDO8iZ61J_m3eHh1A4G1wAHlMiNp-40OeI',
     authDomain: 'bdtheque-96ba0.firebaseapp.com',
     databaseURL: 'https://bdtheque-96ba0.firebaseio.com',
