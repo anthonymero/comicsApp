@@ -20,6 +20,8 @@ export class UserProfileComponent implements OnInit {
   userProfileForm: FormGroup;
   comicsStyles: string[];
 
+  currentUser: IUser;
+
 
   constructor(
     private readonly authService: AuthService,
@@ -32,16 +34,28 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser$ = this.authService.user$;
     this.comicsStyles = ['aventure', 'biographie', 'fantastique / héroïc-fantasy', 'historique', 'humour', 'jeunesse', 'roman graphique', 'science-fiction', 'polar et thriller', 'western'];
-    this.initForm();
+
+    this.currentUser$.pipe().subscribe(value => {
+      this.currentUser = value;
+      this.initForm();
+    });
+
   }
 
+
+
   initForm(): void {
+
     this.userProfileForm = this.fb.group({
-      customDisplayName: [''],
-      favoriteCollection: [''],
-      favoriteStyle: [''],
+      customDisplayName: [this.currentUser.customDisplayName || this.currentUser.displayName || ''],
+      favoriteCollection: [this.currentUser.favoriteCollection || ''],
+      favoriteStyle: [this.currentUser.favoriteStyle || ''],
     });
+
+
+
   }
+
 
   onSubmit() {
     const formValues: Partial<IUser> = this.userProfileForm.value;
