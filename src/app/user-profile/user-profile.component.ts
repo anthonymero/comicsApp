@@ -20,6 +20,10 @@ export class UserProfileComponent implements OnInit {
   userProfileForm: FormGroup;
   comicsStyles: string[];
 
+  currentUser: IUser;
+
+  isUntouched = true;
+
 
   constructor(
     private readonly authService: AuthService,
@@ -32,21 +36,31 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser$ = this.authService.user$;
     this.comicsStyles = ['aventure', 'biographie', 'fantastique / héroïc-fantasy', 'historique', 'humour', 'jeunesse', 'roman graphique', 'science-fiction', 'polar et thriller', 'western'];
-    this.initForm();
+
+    this.currentUser$.pipe().subscribe(value => {
+      this.currentUser = value;
+      this.initForm();
+    });
   }
 
   initForm(): void {
     this.userProfileForm = this.fb.group({
-      customDisplayName: [''],
-      favoriteCollection: [''],
-      favoriteStyle: [''],
+      customDisplayName: [this.currentUser.customDisplayName || this.currentUser.displayName || ''],
+      favoriteCollection: [this.currentUser.favoriteCollection || ''],
+      favoriteStyle: [this.currentUser.favoriteStyle || ''],
+    });
+
+    this.userProfileForm.valueChanges.pipe().subscribe(changes => {
+      this.isUntouched = false;
     });
   }
+
 
   onSubmit() {
     const formValues: Partial<IUser> = this.userProfileForm.value;
     this.userService.updateUser(formValues);
   }
+
 
   async onDeleteProfile(): Promise<void> {
     // DELETE PROFIL in firestore with current user id
@@ -55,11 +69,15 @@ export class UserProfileComponent implements OnInit {
     this.openConfirmModal(uid);
   }
 
+
   onUpdateProfilePicture(): void {
     this.openUserPictureModal();
-
   }
 
+  getUserProfileImage(): string {
+    const profileImg = this.currentUser.customPhotoURL || this.currentUser.photoURL || './assets/img/profile_default.jpg';
+    return `url(${profileImg})`;
+  }
 
 
   openConfirmModal(uid): void {
@@ -79,8 +97,8 @@ export class UserProfileComponent implements OnInit {
       data: dialogData,
     };
     this.matDialog.open(ConfirmModalComponent, dialogConfig);
-
   }
+
 
   openUserPictureModal(): void {
     const dialogData: IDialogData = {
