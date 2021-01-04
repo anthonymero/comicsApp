@@ -12,9 +12,9 @@
 
       <div class="row user-profile-content-infos">
         <div class="col-xs-12 col-sm-2 ">
-          <div class="user-profile-content-infos-picture" (click)="onUpdateProfilePicture()">
-            <img [src]="user.customPhotoURL ? user.customPhotoURL : user.photoURL"
-            alt="profile-picture" class="img-circle">
+          <div class="user-profile-content-infos-picture"
+          [ngStyle]="{backgroundImage: getUserProfileImage()}"
+          (click)="onUpdateProfilePicture()">
             <div class="user-profile-content-infos-picture-edit">
               <fa-icon [icon]="['fas','pencil-alt']"></fa-icon>
             </div>
@@ -66,7 +66,7 @@
       </div>
 
       <div class="user-profile-content-action">
-        <button class="btn btn-default" type="submit" (click)="onSubmit()">Mettre à jour mon profil</button>
+        <button class="btn btn-default" type="submit" [disabled]="isUntouched" (click)="onSubmit()">Mettre à jour mon profil</button>
         <button class="btn btn-danger" (click)="onDeleteProfile()">Supprimer mon profil</button>
 
       </div>

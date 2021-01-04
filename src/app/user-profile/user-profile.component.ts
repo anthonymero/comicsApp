@@ -22,6 +22,8 @@ export class UserProfileComponent implements OnInit {
 
   currentUser: IUser;
 
+  isUntouched = true;
+
 
   constructor(
     private readonly authService: AuthService,
@@ -39,21 +41,18 @@ export class UserProfileComponent implements OnInit {
       this.currentUser = value;
       this.initForm();
     });
-
   }
 
-
-
   initForm(): void {
-
     this.userProfileForm = this.fb.group({
       customDisplayName: [this.currentUser.customDisplayName || this.currentUser.displayName || ''],
       favoriteCollection: [this.currentUser.favoriteCollection || ''],
       favoriteStyle: [this.currentUser.favoriteStyle || ''],
     });
 
-
-
+    this.userProfileForm.valueChanges.pipe().subscribe(changes => {
+      this.isUntouched = false;
+    });
   }
 
 
@@ -62,6 +61,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.updateUser(formValues);
   }
 
+
   async onDeleteProfile(): Promise<void> {
     // DELETE PROFIL in firestore with current user id
     const uid = await this.userService.getCurrentUserId();
@@ -69,11 +69,15 @@ export class UserProfileComponent implements OnInit {
     this.openConfirmModal(uid);
   }
 
+
   onUpdateProfilePicture(): void {
     this.openUserPictureModal();
-
   }
 
+  getUserProfileImage(): string {
+    const profileImg = this.currentUser.customPhotoURL || this.currentUser.photoURL || './assets/img/profile_default.jpg';
+    return `url(${profileImg})`;
+  }
 
 
   openConfirmModal(uid): void {
@@ -93,8 +97,8 @@ export class UserProfileComponent implements OnInit {
       data: dialogData,
     };
     this.matDialog.open(ConfirmModalComponent, dialogConfig);
-
   }
+
 
   openUserPictureModal(): void {
     const dialogData: IDialogData = {
