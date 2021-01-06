@@ -16,9 +16,15 @@ export class UsersService {
     private readonly storageService: StorageService,
     public afAuth: AngularFireAuth,
   ) {
+
   }
 
   // Get all users
+
+  // Get current user
+  async getCurrentUser(): Promise<any> {
+    return await this.afAuth.currentUser;
+  }
 
   // Get User by id
   getUser(uid: string) {

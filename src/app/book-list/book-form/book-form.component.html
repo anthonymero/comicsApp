@@ -2,46 +2,48 @@
     <div class="col-sm-8 col-sm-offset-2">
         <h2>Nouveau livre</h2>
         <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="editor" id="editor"> Editeur
+            <!-- <div class="form-group">
+                <label for="publisher" id="publisher"> Editeur
                 </label>
-                <input type="text" class="form-control" formControlName="editor">
-            </div>
+                <input type="text" class="form-control" formControlName="publisher">
+            </div> -->
+
             <div class="form-group">
-                <label for="collection" id="collection"> Série
-                </label>
-                <input type="text" class="form-control" formControlName="collection">
+              <label for="tilte" id="title"> Titre
+              </label>
+              <input type="text" class="form-control" formControlName="title">
             </div>
+
             <div class="form-group">
                 <label for="volume" id="volume"> Tome
                 </label>
                 <input type="text" class="form-control" formControlName="volume">
             </div>
-            <div class="form-group">
-                <label for="tilte" id="title"> Titre
-                </label>
-                <input type="text" class="form-control" formControlName="title">
-            </div>
+
             <div class="form-group">
                 <label for="year" id="year"> Année de parution
                 </label>
                 <input type="text" class="form-control" formControlName="year">
             </div>
+
             <div class="form-group">
                 <label for="scenario" id="scenario"> Scenario
                 </label>
                 <input type="text" class="form-control" formControlName="scenario">
             </div>
+
             <div class="form-group">
                 <label for="drawing" id="drawing"> Dessin
                 </label>
                 <input type="text" class="form-control" formControlName="drawing">
             </div>
+
             <div class="form-group">
                 <label for="colors" id="colors"> Couleurs
                 </label>
                 <input type="text" class="form-control" formControlName="colors">
             </div>
+
             <div class="form-group">
                 <h4>Ajouter une image</h4>
                 <input type="file" (change)="detectFiles($event)" class="form-control upload-file" accept="image/*">

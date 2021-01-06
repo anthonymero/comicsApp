@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IBook } from '../models/book.model';
-import { Subscription } from 'rxjs';
-import { BooksService } from '../services/books.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { IBook } from '../models/book.model';
+import { BooksService } from '../services/books.service';
 
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss']
 })
-export class BookListComponent implements OnInit, OnDestroy {
+export class BookListComponent implements OnInit {
 
-  books: IBook[];
-  booksSubscription: Subscription;
+  books: Observable<IBook[]>;
+  currentUser;
 
   constructor(
     private booksService: BooksService,
@@ -20,13 +20,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.booksSubscription = this.booksService.booksSubject.subscribe(
-      (books: IBook[]) => {
-        this.books = books;
-      }
-    );
-    this.booksService.getBooks();
-    this.booksService.emitBooks();
+    this.booksService.getCurrentUserBooks().then(books => this.books = books);
   }
 
 
@@ -44,8 +38,5 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/books', 'view', id]);
   }
 
-  ngOnDestroy(): void {
-    this.booksSubscription.unsubscribe();
-  }
 
 }

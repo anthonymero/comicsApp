@@ -24,15 +24,12 @@ export class BookFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.booksService.uploadProgressPercent.subscribe(progressPercent => this.progressPercent = progressPercent);
   }
 
   initForm(): void {
     this.bookForm = this.fb.group({
-      editor: ['', Validators.required],
-      collection: ['', Validators.required],
-      volume: [ '', Validators.required],
       title: ['', Validators.required],
+      volume: [ '', Validators.required],
       year: [''],
       scenario: [''],
       drawing: [''],
@@ -42,29 +39,34 @@ export class BookFormComponent implements OnInit {
 
   onSubmit() {
     this.booksService.createNewBook({
-      editor: this.bookForm.value.editor,
-      collection: this.bookForm.value.collection,
-      volume: this.bookForm.value.volume,
+      uid: undefined,
+      userId: undefined,
       title: this.bookForm.value.title,
+      volume: this.bookForm.value.volume,
       year: this.bookForm.value.year,
       scenario: this.bookForm.value.scenario,
       drawing: this.bookForm.value.drawing,
       colors: this.bookForm.value.colors,
-      photo: this.fileUrl ? this.fileUrl : '',
-
+      cover: this.fileUrl,
     });
     this.router.navigate(['/books']);
   }
 
-  onUploadFile(file: File) {
+  async onUploadFile(file: File) {
     this.fileIsUploading = true;
-    this.booksService.uploadFile(file).then(
-      (url: string) => {
-        this.fileUrl = url;
-        this.fileIsUploading = false;
-        this.fileUploaded = true;
-      }
-    );
+    const fileMetadata = await this.booksService.uploadBookCover(file);
+    fileMetadata.downloadUrl$.pipe()
+      .subscribe(downloadUrl => this.fileUrl = downloadUrl);
+    fileMetadata.uploadProgress$.pipe()
+      .subscribe(progress => {
+        this.progressPercent = progress;
+        if (progress === 100) {
+          this.fileIsUploading = false;
+          this.fileUploaded = true;
+        }
+      });
+
+
   }
 
   detectFiles(event) {

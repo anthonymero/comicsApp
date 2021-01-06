@@ -20,14 +20,15 @@ export class SingleBookComponent implements OnInit {
 
   ngOnInit() {
     this.book = {
-      editor: '',
+      uid: '',
+      userId: '',
       volume: '',
       title: '',
       year: '',
       scenario: '',
       drawing: '',
       colors: '',
-      photo: ''
+      cover: ''
     };
     const id = this.route.snapshot.params.id;
     this.booksService.getSingleBook(+id).then(
@@ -38,7 +39,7 @@ export class SingleBookComponent implements OnInit {
   }
 
   getBackgroundImage(book: IBook) {
-    return `url(${book.photo})`;
+    return `url(${book.cover})`;
   }
 
   onBack() {

@@ -1,40 +1,49 @@
 import { Injectable } from '@angular/core';
-import { IBook } from '../models/book.model';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import firebase from 'firebase';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { IBook } from '../models/book.model';
+import { FilesUploadMetadata, StorageService } from './storage.service';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService {
 
-  books: IBook[] = [];
+  booksCollection: AngularFirestoreCollection<IBook>;
+
+  books$: Observable<IBook[]>;
   booksSubject = new Subject<IBook[]>();
+  bookCoverUrl;
 
   private percent = new BehaviorSubject<number>(0);
   uploadProgressPercent = this.percent.asObservable();
 
-  constructor() {
+  uploadProgress: number;
+
+  constructor(
+    private readonly afs: AngularFirestore,
+    private readonly storageService: StorageService,
+    private readonly userService: UsersService,
+    public afAuth: AngularFireAuth,
+  ) {
+    this.booksCollection = afs.collection<IBook>('books');
 
 
-  }
-
-  emitBooks() {
-    this.booksSubject.next(this.books);
-  }
-
-  // Save books
-  saveBooks() {
-    firebase.database().ref('/books').set(this.books);
   }
 
   // Get books
   getBooks() {
-    firebase.database().ref('/books')
-      .on('value', (data) => {
-        this.books = data.val() ? data.val() : [];
-        this.emitBooks();
-      });
+    return this.booksCollection.valueChanges();
+  }
+
+  // Get current user books
+  async getCurrentUserBooks(): Promise<Observable<IBook[]>> {
+    const currentUser = await this.afAuth.currentUser;
+    return this.afs.collection<IBook>('books', ref => ref.where('userId', '==', currentUser.uid)).valueChanges();
+
   }
 
   // Get book by id
@@ -52,16 +61,31 @@ export class BooksService {
   }
 
   // Create newBook
-  createNewBook(newBook: IBook) {
-    this.books.push(newBook);
-    this.saveBooks();
-    this.emitBooks();
+  async createNewBook(book: IBook): Promise<void> {
+    const currentUserId: string = await this.userService.getCurrentUserId();
+    const uid = this.afs.createId();
+    const bookToCreate: IBook = {
+      uid,
+      userId: currentUserId,
+      title: book.title,
+      volume: book.volume || undefined,
+      year: book.year,
+      scenario: book.scenario,
+      drawing: book.drawing,
+      colors: book.colors,
+      cover: book.cover || ''
+    };
+    const collection = this.booksCollection.doc(uid);
+    const res = await collection.set(bookToCreate, {
+      merge: true,
+    });
+    return res;
   }
 
   // Remove Book
   removeBook(bookToRemove: IBook): void {
-    if (bookToRemove.photo) {
-      const storageRef =  firebase.storage().refFromURL(bookToRemove.photo);
+    if (bookToRemove.cover) {
+      const storageRef = firebase.storage().refFromURL(bookToRemove.cover);
       storageRef.delete().then(
         () => {
           console.log('Photo supprimée !');
@@ -72,43 +96,30 @@ export class BooksService {
         }
       );
     }
-    const bookToRemoveIndex: number = this.books.findIndex(
+    const bookToRemoveIndex: number = this.books$.findIndex(
       (book) => {
         if (book === bookToRemove) {
           return true;
         }
       }
     );
-    this.books.splice(bookToRemoveIndex, 1);
+    this.books$.splice(bookToRemoveIndex, 1);
     this.saveBooks();
     this.emitBooks();
   }
 
-  // Upload file
-  uploadFile(file: File) {
-    return new Promise((resolve, reject) => {
-      const almostUniqueFileName = Date.now().toString();
-      const upload =  firebase.storage().ref()
-        .child('images/' + almostUniqueFileName + file.name)
-        .put(file);
-
-      upload.on( firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {
-          const progress = (upload.snapshot.bytesTransferred / upload.snapshot.totalBytes) * 100;
-          this.percent.next(progress);
-          console.log('chargement...', progress);
-        },
-        (error) => {
-          console.log('Erreur de chargement' + error);
-          reject(error);
-        },
-        () => {
-          resolve(upload.snapshot.ref.getDownloadURL());
-        }
-      );
-    });
+  // UploadBookCover file
+  async uploadBookCover(file: File): Promise<FilesUploadMetadata> {
+    const mediaFolderPath = `images/${(await this.afAuth.currentUser).email}/covers/`;
+    return this.storageService.uploadFileAndGetMetadata(mediaFolderPath, file);
   }
+
   // Update book
+  async updateBook(book: Partial<IBook>): Promise<void> {
+    // TODO
+  }
+
+
 }
 
 
