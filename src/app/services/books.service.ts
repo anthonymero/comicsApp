@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import firebase from 'firebase';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { IBook } from '../models/book.model';
 import { FilesUploadMetadata, StorageService } from './storage.service';
@@ -18,6 +17,7 @@ export class BooksService {
   booksSubject = new Subject<IBook[]>();
   bookCoverUrl;
 
+
   private percent = new BehaviorSubject<number>(0);
   uploadProgressPercent = this.percent.asObservable();
 
@@ -31,33 +31,18 @@ export class BooksService {
   ) {
     this.booksCollection = afs.collection<IBook>('books');
 
-
   }
 
   // Get books
-  getBooks() {
+  getBooks(): Observable<IBook[]> {
     return this.booksCollection.valueChanges();
   }
 
   // Get current user books
-  async getCurrentUserBooks(): Promise<Observable<IBook[]>> {
-    const currentUser = await this.afAuth.currentUser;
+   async getCurrentUserBooks(): Promise<Observable<IBook[]>> {
+    const currentUser = await this.userService.getCurrentUser();
     return this.afs.collection<IBook>('books', ref => ref.where('userId', '==', currentUser.uid)).valueChanges();
 
-  }
-
-  // Get book by id
-  getSingleBook(id: number) {
-    return new Promise((resolve, reject) => {
-      firebase.database().ref('/books/' + id)
-        .once('value').then(
-          (data) => {
-            resolve(data.val());
-          }, (error) => {
-            reject(error);
-          }
-        );
-    });
   }
 
   // Create newBook
@@ -83,29 +68,13 @@ export class BooksService {
   }
 
   // Remove Book
-  removeBook(bookToRemove: IBook): void {
+  async removeBook(bookToRemove: IBook): Promise<void> {
+    // Delete coverRef image if exists
     if (bookToRemove.cover) {
-      const storageRef = firebase.storage().refFromURL(bookToRemove.cover);
-      storageRef.delete().then(
-        () => {
-          console.log('Photo supprimée !');
-        }
-      ).catch(
-        (error) => {
-          console.log('fichier non trouvé' + error);
-        }
-      );
+      const storageRef = this.storageService.getStorageRef(bookToRemove.cover);
+      storageRef.delete();
     }
-    const bookToRemoveIndex: number = this.books$.findIndex(
-      (book) => {
-        if (book === bookToRemove) {
-          return true;
-        }
-      }
-    );
-    this.books$.splice(bookToRemoveIndex, 1);
-    this.saveBooks();
-    this.emitBooks();
+    await this.booksCollection.doc(bookToRemove.uid).delete();
   }
 
   // UploadBookCover file
@@ -115,8 +84,11 @@ export class BooksService {
   }
 
   // Update book
-  async updateBook(book: Partial<IBook>): Promise<void> {
+  async updateBook(book: IBook): Promise<void> {
     // TODO
+    return this.booksCollection
+    .doc (book.uid)
+    .set(book, {merge: true});
   }
 
 
