@@ -1,6 +1,6 @@
 export interface IBook {
-  uid: string;
-  userId: string;
+  uid?: string;
+  userId?: string;
   title: string;
   // Tome
   volume: string;
