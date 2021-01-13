@@ -44,6 +44,13 @@ export class BookListComponent implements OnInit {
     this.router.navigate(['/books', 'view', id]);
   }
 
+  // Get default cover
+  getBookCover(book: IBook): string {
+    return book.cover || this.booksService.getDefaultBookCover();
+  }
+
+
+
   // Open update book modal
   onUpdateBook(book: IBook, event) {
     event.stopPropagation();

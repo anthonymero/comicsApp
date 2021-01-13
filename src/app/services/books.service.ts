@@ -91,6 +91,11 @@ export class BooksService {
     .set(book, {merge: true});
   }
 
+  // Get default book cover
+  getDefaultBookCover(): string {
+    return './assets/img/cover_default.jpg';
+  }
+
 
 }
 

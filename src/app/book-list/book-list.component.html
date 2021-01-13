@@ -20,7 +20,7 @@
 
         <h4>{{book.title}}</h4>
         <p class="list-group-item-text">{{book.publisher}}</p>
-        <img class="cover pull-right" *ngIf="book && book.cover" [src]="book.cover" alt="book photo">
+        <img class="cover pull-right"  [src]="getBookCover(book)" alt="book photo">
 
       </button>
     </div>
