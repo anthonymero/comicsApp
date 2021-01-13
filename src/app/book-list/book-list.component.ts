@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IBook } from '../models/book.model';
+import { IDialogData } from '../models/dialogData.model';
 import { BooksService } from '../services/books.service';
+import { BookUpdateModalComponent } from './book-update-modal/book-update-modal.component';
 
 @Component({
   selector: 'app-book-list',
@@ -11,16 +14,18 @@ import { BooksService } from '../services/books.service';
 })
 export class BookListComponent implements OnInit {
 
-  books: Observable<IBook[]>;
-  currentUser;
+  books$: Observable<IBook[]>;
 
   constructor(
     private booksService: BooksService,
+    private matDialog: MatDialog,
     private readonly router: Router,
   ) { }
 
   ngOnInit() {
-    this.booksService.getCurrentUserBooks().then(books => this.books = books);
+    this.booksService.getCurrentUserBooks().then(books => {
+      this.books$ = books;
+    });
   }
 
 
@@ -29,13 +34,36 @@ export class BookListComponent implements OnInit {
     this.router.navigate(['/books', 'new']);
   }
 
-  onRemoveBook(book) {
+  onRemoveBook(book, event) {
+    event.stopPropagation();
     this.booksService.removeBook(book);
-   }
+  }
 
   // Navigate to Single view book
   onViewBook(id: number) {
     this.router.navigate(['/books', 'view', id]);
+  }
+
+  // Open update book modal
+  onUpdateBook(book: IBook, event) {
+    event.stopPropagation();
+    const dialogData: IDialogData = {
+      name: 'updateBook',
+      title: `Modifier : ${book.title}`,
+      description: '',
+      actionButtonTxt: 'Enregistrer les modifications',
+      uid: undefined,
+      input: book,
+    };
+
+    const dialogConfig: MatDialogConfig = {
+      disableClose: false,
+      id: 'update-book-modal',
+      height: 'auto',
+      width: '500px',
+      data: dialogData,
+    };
+    this.matDialog.open(BookUpdateModalComponent, dialogConfig);
   }
 
 
