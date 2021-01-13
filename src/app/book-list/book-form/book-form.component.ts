@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IBook } from 'src/app/models/book.model';
 import { BooksService } from 'src/app/services/books.service';
 
 @Component({
@@ -9,8 +10,11 @@ import { BooksService } from 'src/app/services/books.service';
   styleUrls: ['./book-form.component.scss']
 })
 export class BookFormComponent implements OnInit {
+  @Input() book: IBook;
+  @Input() mode: string;
 
   bookForm: FormGroup;
+  bookToSubmit: IBook;
   fileIsUploading = false;
   fileUrl: string;
   fileUploaded = false;
@@ -24,23 +28,24 @@ export class BookFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.mode = this.mode === 'update' ? this.mode : '';
   }
 
   initForm(): void {
     this.bookForm = this.fb.group({
-      title: ['', Validators.required],
-      volume: [ '', Validators.required],
-      year: [''],
-      scenario: [''],
-      drawing: [''],
-      colors: [''],
+      title: [this.book?.title || '', Validators.required],
+      volume: [this.book?.volume || '', Validators.required],
+      year: [this.book?.year || ''],
+      scenario: [this.book?.scenario || ''],
+      drawing: [this.book?.drawing || ''],
+      colors: [this.book?.colors || ''],
+      cover: this.book?.cover || null,
     });
   }
 
   onSubmit() {
-    this.booksService.createNewBook({
-      uid: undefined,
-      userId: undefined,
+    this.bookToSubmit = {
+      uid: this.book?.uid || undefined,
       title: this.bookForm.value.title,
       volume: this.bookForm.value.volume,
       year: this.bookForm.value.year,
@@ -48,7 +53,10 @@ export class BookFormComponent implements OnInit {
       drawing: this.bookForm.value.drawing,
       colors: this.bookForm.value.colors,
       cover: this.fileUrl,
-    });
+    };
+    // resolve submitMethod
+    this.resolveSubmitMethod(this.mode);
+
     this.router.navigate(['/books']);
   }
 
@@ -71,6 +79,26 @@ export class BookFormComponent implements OnInit {
 
   detectFiles(event) {
     this.onUploadFile(event.target.files[0]);
+  }
+
+  async createNewBook() {
+    await this.booksService.createNewBook(this.bookToSubmit);
+  }
+
+  async UpdateBook() {
+    if (!this.fileUrl){
+      this.bookToSubmit.cover = this.book?.cover;
+
+    }
+    await this.booksService.updateBook(this.bookToSubmit);
+  }
+
+  private resolveSubmitMethod(mode: string): void {
+    if (mode === 'update') {
+      this.UpdateBook();
+    } else {
+      this.createNewBook();
+    }
   }
 
 }
