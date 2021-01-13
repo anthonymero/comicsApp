@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IUser } from '../models/user.model';
 import { StorageService } from './storage.service';
+import firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class UsersService {
   // Get all users
 
   // Get current user
-  async getCurrentUser(): Promise<any> {
+  async getCurrentUser(): Promise<firebase.User> {
     return await this.afAuth.currentUser;
   }
 
