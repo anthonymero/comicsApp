@@ -20,19 +20,17 @@ export class SingleCollectionComponent implements OnInit {
 
   ngOnInit() {
     this.collection = {
+      uid: '',
       name: '',
       editor: '',
       volumeCount: 1,
       state: '',
       style: '',
+      userId: '',
+      books: [],
     };
 
-    const id = this.route.snapshot.params.id;
-    this.collectionsService.getCollectionById(+id).then(
-      (collection: ICollection) => {
-        this.collection = collection;
-      }
-    );
+
   }
 
   onBack(): void {

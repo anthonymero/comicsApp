@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ICollection } from '../models/collection.model';
-import { Subject } from 'rxjs';
 import firebase from 'firebase';
+import { FilesUploadMetadata, StorageService } from './storage.service';
+import { UsersService } from './users.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 
 @Injectable({
@@ -9,61 +13,57 @@ import firebase from 'firebase';
 })
 export class CollectionsService {
 
-  collections: ICollection[] = [];
+  collectionsCollections: AngularFirestoreCollection<ICollection>;
+  collections$: Observable<ICollection[]>;
   collectionsSubject = new Subject<ICollection[]>();
 
-  constructor() { }
+  constructor(
+    private readonly afs: AngularFirestore,
+    private userService: UsersService,
+  ) {
+    this.collectionsCollections = afs.collection<ICollection>('collections');
+   }
 
-  emitCollections() {
-    this.collectionsSubject.next(this.collections);
-  }
+
 
   // Save collections
   saveCollections() {
-    firebase.database().ref('/collections').set(this.collections);
   }
 
   // Get collections
   getCollections() {
-    firebase.database().ref('/collections')
-      .on('value', (data) => {
-        this.collections = data.val() ? data.val() : [];
-        this.emitCollections();
-      });
   }
 
   // Get collection by id
-  getCollectionById(id: number) {
-    return new Promise((resolve, reject) => {
-      firebase.database().ref('/collections/' + id)
-        .once('value').then(
-          (data) => {
-            resolve(data.val());
-          }, (error) => {
-            reject(error);
-          }
-        );
-    });
+  async getCurrentUserCollections(): Promise<Observable<ICollection[]>> {
+    const currentUser = await this.userService.getCurrentUser();
+    return this.afs.collection<ICollection>('collections', ref => ref.where('userId', '==', currentUser.uid)).valueChanges();
   }
 
   // Create new collection
-  createNewCollection(newCollection: ICollection) {
-    this.collections.push(newCollection);
-    this.saveCollections();
-    this.emitCollections();
+  async createNewCollection(newCollection: ICollection) {
+    const currentUser = await this.userService.getCurrentUser();
+    const uid = this.afs.createId();
+    const collectionToCreate: ICollection = {
+      uid,
+      name: newCollection.name,
+      editor: newCollection.editor,
+      volumeCount: newCollection.volumeCount,
+      state: newCollection.state,
+      style: newCollection.style,
+      userId: currentUser.uid,
+      books: newCollection.books,
+    };
+
+    return await this.collectionsCollections.doc(uid)
+    .set(collectionToCreate, {
+      merge: true,
+    });
+
   }
 
   // Remove collection
   removeCollection(collectionToRemove: ICollection): void {
-    const collectionToRemoveIndex: number = this.collections.findIndex(
-      (collection) => {
-        if (collection === collectionToRemove) {
-          return true;
-        }
-      }
-    );
-    this.collections.splice(collectionToRemoveIndex, 1);
-    this.saveCollections();
-    this.emitCollections();
+
   }
 }

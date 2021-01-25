@@ -3,6 +3,7 @@ import { ICollection } from '../models/collection.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { CollectionsService } from '../services/collections.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-collection-list',
@@ -11,7 +12,7 @@ import { CollectionsService } from '../services/collections.service';
 })
 export class CollectionListComponent implements OnInit {
 
-  collections: ICollection[];
+  collections$: Observable<ICollection[]>;
   collectionsSubscription: Subscription;
 
   constructor(
@@ -22,13 +23,9 @@ export class CollectionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collectionsSubscription = this.collectionsService.collectionsSubject.subscribe(
-      (collections: ICollection[]) => {
-        this.collections = collections;
-      }
-    );
-    this.collectionsService.getCollections();
-    this.collectionsService.emitCollections();
+    this.collectionsService.getCurrentUserCollections().then(collections => {
+      this.collections$ = collections;
+    });
   }
 
   // Navigate to new collection form
