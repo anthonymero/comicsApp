@@ -28,6 +28,10 @@ export class StorageService {
     };
   }
 
+  getStorageRef(url: string) {
+    return this.storage.refFromURL(url);
+  }
+
   private getDownloadUrl$(uploadTask: AngularFireUploadTask, path: string): Observable<string> {
     return from(uploadTask).pipe(
       switchMap((_) => this.storage.ref(path).getDownloadURL()),

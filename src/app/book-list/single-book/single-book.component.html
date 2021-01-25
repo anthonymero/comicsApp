@@ -1,10 +1,10 @@
-<div class="row single-book">
+<div class="row single-book" *ngIf="selectedBook$ | async as book">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-xs-6 single-book-description">
-                <h1>{{book.collection}}</h1>
+                <!-- <h1>{{book.collection}}</h1> -->
                 <h3>Tome {{book.volume}} - {{book.title}}</h3>
-                <p>Edition : {{book.editor}}</p>
+                <!-- <p>Edition : {{book.editor}}</p> -->
                 <p>Année de parution : {{book.year}}</p>
                 <p>Scénario : {{book.scenario}}</p>
                 <p>Dessin : {{book.drawing}}</p>
@@ -18,7 +18,6 @@
             </div>
 
         </div>
-
         <button class="btn btn-default" (click)="onBack()">Retour</button>
     </div>
 </div>

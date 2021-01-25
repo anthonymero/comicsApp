@@ -4,4 +4,5 @@ export interface IDialogData {
   description: string;
   actionButtonTxt: string;
   uid: string;
+  input?: any;
 }

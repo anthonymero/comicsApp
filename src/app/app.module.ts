@@ -41,6 +41,7 @@ import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './app-angular-material.module';
 import { UserProfilePictureModalComponent } from './user-profile/user-profile-picture-modal/user-profile-picture-modal.component';
+import { BookUpdateModalComponent } from './book-list/book-update-modal/book-update-modal.component';
 
 const icons: IconDefinition[] = [
   faGoogle,
@@ -67,7 +68,8 @@ const icons: IconDefinition[] = [
     VerifyEmailComponent,
     UserProfileComponent,
     ConfirmModalComponent,
-    UserProfilePictureModalComponent
+    UserProfilePictureModalComponent,
+    BookUpdateModalComponent
   ],
   imports: [
     BrowserModule,

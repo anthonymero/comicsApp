@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IBook } from 'src/app/models/book.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IBook } from 'src/app/models/book.model';
 import { BooksService } from 'src/app/services/books.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { BooksService } from 'src/app/services/books.service';
 })
 export class SingleBookComponent implements OnInit {
 
-  book: IBook;
+  selectedBook$: Observable<IBook>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -19,26 +21,19 @@ export class SingleBookComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.book = {
-      editor: '',
-      volume: '',
-      title: '',
-      year: '',
-      scenario: '',
-      drawing: '',
-      colors: '',
-      photo: ''
-    };
     const id = this.route.snapshot.params.id;
-    this.booksService.getSingleBook(+id).then(
-      (book: IBook) => {
-        this.book = book;
-      }
-    );
+    this.getSelectedBook(id);
+  }
+
+
+  async getSelectedBook(id: string) {
+    this.selectedBook$ = (await this.booksService.getCurrentUserBooks())
+    .pipe(map(books => books.find(b => b.uid === id)));
   }
 
   getBackgroundImage(book: IBook) {
-    return `url(${book.photo})`;
+    const bookCoverUrl = book.cover || this.booksService.getDefaultBookCover();
+    return `url(${bookCoverUrl})`;
   }
 
   onBack() {
