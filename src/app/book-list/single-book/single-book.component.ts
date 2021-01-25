@@ -32,7 +32,8 @@ export class SingleBookComponent implements OnInit {
   }
 
   getBackgroundImage(book: IBook) {
-    return `url(${book.cover})`;
+    const bookCoverUrl = book.cover || this.booksService.getDefaultBookCover();
+    return `url(${bookCoverUrl})`;
   }
 
   onBack() {

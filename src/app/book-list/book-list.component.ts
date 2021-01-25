@@ -67,7 +67,8 @@ export class BookListComponent implements OnInit {
       disableClose: false,
       id: 'update-book-modal',
       height: 'auto',
-      width: '500px',
+      width: '100%',
+      maxWidth: '800px',
       data: dialogData,
     };
     this.matDialog.open(BookUpdateModalComponent, dialogConfig);

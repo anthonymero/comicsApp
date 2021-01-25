@@ -28,7 +28,7 @@ export class BookFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.mode = this.mode === 'update' ? this.mode : '';
+    this.mode = this.mode === 'update' ? this.mode : 'create';
   }
 
   initForm(): void {
